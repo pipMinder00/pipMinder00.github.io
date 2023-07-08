@@ -38,7 +38,9 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Api_hooking">
-<meta property="og:description" content="">
+<meta property="og:description" content="بسم الله الرحمن الرحيم الحمدلله رب العالمين اللهم بارك لنا بعلمنا وعملنا، اما بعد في هذه المقالة راح نتطرق لأحد الأساليب اللي تمكن المهاجم بأنه يتلاعب بسلوك وطبيعة البرنامج من خلال API Hooking .
+بإذن الله راح تكون المحاور:
+نظرة عامة عن API hooking نستعرض أحد التكنيكات (IAT hooking) كيف كمحللين نتعرف ونكتشف وجود hooking ونستخرج الكود في البداية API هو واجهة البرمجيات اللي تسمح لك تستخدم functions وتستفيد منها وتختصر عليك وقت برمجة كل شي من البداية.">
 <meta property="og:url" content="https://pipminder00.github.io/posts/api_hooking/">
 <meta property="article:published_time" content="2023-07-08T03:04:34+03:00">
   <meta property="article:modified_time" content="2023-07-08T03:04:34+03:00">
@@ -57,7 +59,9 @@
   <meta name="twitter:creator" content="johndoestwitter">
 
 <meta name="twitter:title" content="Api_hooking">
-<meta name="twitter:description" content="">
+<meta name="twitter:description" content="بسم الله الرحمن الرحيم الحمدلله رب العالمين اللهم بارك لنا بعلمنا وعملنا، اما بعد في هذه المقالة راح نتطرق لأحد الأساليب اللي تمكن المهاجم بأنه يتلاعب بسلوك وطبيعة البرنامج من خلال API Hooking .
+بإذن الله راح تكون المحاور:
+نظرة عامة عن API hooking نستعرض أحد التكنيكات (IAT hooking) كيف كمحللين نتعرف ونكتشف وجود hooking ونستخرج الكود في البداية API هو واجهة البرمجيات اللي تسمح لك تستخدم functions وتستفيد منها وتختصر عليك وقت برمجة كل شي من البداية.">
 
 
 
@@ -292,7 +296,7 @@
   <section class="page-header">
     <h1 class="page-header-title">Api Hooking</h1>
     <div class="post-list-meta">
-      <div class="post-list-dates">Jul 8, 2023&nbsp;&middot;&nbsp;0 min.</div>
+      <div class="post-list-dates">Jul 8, 2023&nbsp;&middot;&nbsp;3 min.</div>
       
       
     </div>
@@ -322,7 +326,39 @@
 
 </div>
     <article class="markdown">
-        
+        <p>بسم الله الرحمن الرحيم
+الحمدلله رب العالمين اللهم بارك لنا بعلمنا وعملنا، اما بعد
+في هذه المقالة راح نتطرق لأحد الأساليب اللي تمكن المهاجم بأنه يتلاعب بسلوك وطبيعة البرنامج من خلال API Hooking .</p>
+<p>بإذن الله راح تكون المحاور:</p>
+<ol>
+<li>نظرة عامة عن API hooking</li>
+<li>نستعرض أحد التكنيكات (IAT hooking)</li>
+<li>كيف كمحللين نتعرف ونكتشف وجود hooking ونستخرج الكود</li>
+</ol>
+<p>في البداية API هو واجهة البرمجيات اللي تسمح لك تستخدم functions وتستفيد منها وتختصر عليك وقت برمجة كل شي من البداية. فهي تعتبر كأنها وصل بينك وبين المبرمجين اللي نفذوها. API Hooking هو محاولة المهاجم بأنه يغير الكود بنفس API functions، فأنت بظنك إن البرنامج سليم و مصرح به لكن تنصدم ان قاعد يشغل malicious code. أمثلة عليها يعطل لك مكافح الفيروسات ويشغله على كيفه، وعلى اقل تقدير ممكن يتلصص لك على parameter اللي تستخدم في function.
+وحده من طرق API Hooking هو Imported Address table (IAT) Hooking وهو أبسطها بالنسبة لي، فكرتها لما البرنامج يصير موجود بالميموري ويشتغل البرنامج يبدأ يربط Dynamic Link Library(DLLs) اللي يحتاجها فعشان يعرف يشغلfunction يروح عند IAT واللي هي بالضبط كأنها جدول يحفظ فيها أماكن(address) function. يجي دور المهاجم ويغير المكان إلى مكان الكود الخاص فيه. خلونا نأخذ سيناريو بسيط.</p>
+<p>(1) سيناريو البرنامج الطبيعي باللون الأخضر: البرنامج يبدأ يشتغل يبدأ يحملDLL بالميموري يسأل عنFunction المطلوبة في حالتناWriteFile() يسأل عنها بجدولIAT ويروح لمكانها عند kernal32.dll ويشغلها طبيعي.
+(2) سيناريو برنامج المهاجم باللون الأحمر: البرنامج يبدأ نفس الشغل اللي قبل لكن الفرق إن address لـ WriteFile() صارت تودي لـ Malicious بعدها يرجع يشغلWriteFile()كأنه طبيعي.
+طيب كيف كمحللين نعرف إن صار هالشيء؟ ممكن لما نجي نحلل الميموري نلقى بعض الأدلة اللي تدلنا إن صار معانا API hooking من خلال استخدام volatility نقدر نحدد ونستخرج حتى الكود! راح نستعمل مثال من David Schiff اسمه coreflood لاتاك صار في 2010 فيه تحليلات كثيرة بس انا بركز على جزء hooking
+*ملاحظة رقم pid المستخدم في الكوماند نتيجة تحليلات سابقة ما تطرقنا لها</p>
+<p>نستخدم هذا الكوماند ونقدر نلاحظ
+vol.exe -f coreflood.vmem &ndash;profile=WinXPSP2x86 apihooks -p 2044</p>
+<ol>
+<li>إنّ فيه CALL في 0X7FF81960 وهي اللي تودي على malicious code</li>
+<li>والمكان حقها اساسًا مو في نطاق dll اللي هو 0x400000 - 0x419000</li>
+</ol>
+<p>عشان نستخرج functions المستعملة لازم نعرف النطاق من خلال الكوماند التالي، لو نركز شوي call 0X7FF81960 اللي شفناه قبل هو بداخل [0x7ff80000 – 0x7ffadfff]
+vol.exe -f coreflood.vmem &ndash;profile=WinXPSP2x86 vadinfo -p 2044</p>
+<p>أخيرًا، نقدر نطلع API calls كلها اللي استعملها باستخدام impscan. الحين خطوتكم الجايه تتوقعون سلوك الكود من خلال اسماء functions.
+*ملاحظة لو تركت الخطوة السابقة واستخدمت (0X7FF81960) address call راح تضبط معكم الامور
+vol.exe -f coreflood.vmem &ndash;profile=WinXPSP2x86 impscan -p 2044 -b 0x7ff80000</p>
+<p>نصيحة أخيرة جرب/ي بيدك! راح تلقون الميموري دمب في الريفرنس الأول، تجربة ممتعة لكم جميعاً..
+تمت بحمدالله،،
+أمينة عبدالله</p>
+<p>References [1] Memory Analysis For Beginners With Volatility, <a href="https://infosecwriteups.com/memory-analysis-for-beginners-with-volatility-coreflood-trojan-part-1-89981433eeb6" target="_blank" rel="noopener">https://infosecwriteups.com/memory-analysis-for-beginners-with-volatility-coreflood-trojan-part-1-89981433eeb6</a>
+[2] Learning Malware Analysis Packet, <a href="https://www.packtpub.com/product/learning-malware-analysis/9781788392501" target="_blank" rel="noopener">https://www.packtpub.com/product/learning-malware-analysis/9781788392501</a>
+ </p>
+
     </article>
     <aside>
       <div class="single-terms">
@@ -376,16 +412,6 @@
   
 
         
-  <section>
-    <h2>Read Next</h2>
-    <div class="single-next-previous">
-      
-        <a class="previous" href="https://pipminder00.github.io/posts/emoji-support/">&laquo; Emoji Support</a>
-      
-      
-    </div>
-  </section>
-
       
     </aside>
   </div>
