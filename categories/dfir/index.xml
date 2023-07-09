@@ -2,10 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>PipMinder00 Blog</title>
-    <link>https://pipminder00.github.io/tags/</link>
-    <description>Recent content in Tags on PipMinder00 Blog</description>
+    <link>https://pipminder00.github.io/categories/dfir/</link>
+    <description>Recent content in DFIR on PipMinder00 Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="https://pipminder00.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <lastBuildDate>Sat, 08 Jul 2023 03:04:34 +0300</lastBuildDate><atom:link href="https://pipminder00.github.io/categories/dfir/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>API hooking techniques &amp; forensics analysis</title>
       <link>https://pipminder00.github.io/posts/api_hooking/</link>
