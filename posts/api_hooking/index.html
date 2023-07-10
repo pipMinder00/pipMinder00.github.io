@@ -352,14 +352,14 @@
 vol.exe -f coreflood.vmem &ndash;profile=WinXPSP2x86 apihooks -p 2044</p>
 <ol>
 <li>إنّ فيه CALL في 0X7FF81960 وهي اللي تودي على malicious code</li>
-<li>والمكان حقها اساسًا مو في نطاق dll اللي هو 0x400000 - 0x419000
-<figure><img src="vol1.png" width="100%"/>
- </figure>
-</li>
+<li>والمكان حقها اساسًا مو في نطاق dll اللي هو 0x400000 - 0x419000</li>
 </ol>
+<figure><img src="vol1.png" width="100%"/>
+</figure>
+
 <p>عشان نستخرج functions المستعملة لازم نعرف النطاق من خلال الكوماند التالي، لو نركز شوي call 0X7FF81960 اللي شفناه قبل هو بداخل [0x7ff80000 – 0x7ffadfff]
 vol.exe -f coreflood.vmem &ndash;profile=WinXPSP2x86 vadinfo -p 2044</p>
-<figure><img src="vol2.png" width="10&#43;0%"/>
+<figure><img src="vol2.png" width="100%"/>
  </figure>
 
 <p>أخيرًا، نقدر نطلع API calls كلها اللي استعملها باستخدام impscan. الحين خطوتكم الجايه تتوقعون سلوك الكود من خلال اسماء functions.</p>
