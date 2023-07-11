@@ -2,10 +2,11 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>PipMinder00 Blog</title>
-    <link>https://pipminder00.github.io/project-types/</link>
-    <description>Recent content in Project Types on PipMinder00 Blog</description>
+    <link>https://pipminder00.github.io/categories/ctf/</link>
+    <description>Recent content in CTF on PipMinder00 Blog</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="https://pipminder00.github.io/project-types/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <lastBuildDate>Tue, 11 Jul 2023 03:23:58 +0300</lastBuildDate><atom:link href="https://pipminder00.github.io/categories/ctf/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>APT1 Hitman CTFs | Macro &amp; Network</title>
       <link>https://pipminder00.github.io/posts/apt/</link>
